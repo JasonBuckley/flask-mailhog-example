@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  test-app:
+    image: flask-test-app
+    build: test-app/ 
+    ports:
+    - 5000:5000
+    networks: 
+    - test-net
+    entrypoint: "/bin/bash -c"
+    command: ["python3 app.py"]   
+    environment:
+      MAIL_SERVER: "mailhog"
+      MAIL_PORT: "1025"
+      MAIL_USERNAME: "fake@email.com"
+      MAIL_PASSWORD: ""
+      MAIL_USE_TLS: "False"
+      MAIL_USE_SSL: "False"    
+   
+  mailhog:
+    image: mailhog:v1.0.1-arm7 #mailhog/mailhog:v1.0.1
+    container_name: mailhog
+    ports:
+    - 8025:8025
+    - 1025:1025
+    networks:
+    - test-net 
+ 
+networks:
+  test-net: 
